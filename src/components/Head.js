@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toggleMenu } from "../utills/appSlice"
+import { toggleMenu } from "../utills/appSlice";
 
 const Head = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
   };
+// key i
+// -render
+// -useEffect()
+//- start timer and make api call after 200ms
 
+//key -iphone
+//-destroy the component
+//- re-render the componenet
+//- useEffect()
+//-  start timer and make api call after 200ms
   return (
     <div className="grid grid-flow-col p-5 m-2 shadow-lg">
       <div className="flex col-span-1">
@@ -28,6 +38,8 @@ const Head = () => {
         <input
           className="px-5 w-1/2 border border-gray-400 p-2 rounded-l-full"
           type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="border border-gray-400 px-5 py-2 rounded-r-full bg-gray-100">
           🔍
