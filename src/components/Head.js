@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch ,useSelector} from "react-redux";
 import { toggleMenu } from "../utills/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utills/constants";
+import { cacheResults } from "../utills/searchSlice";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -9,6 +10,7 @@ const Head = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const dispatch = useDispatch();
+  const searchCache = useSelector((store) => store.search);
 
   const toggleMenuHandler = () => {
     dispatch(toggleMenu());
@@ -16,7 +18,11 @@ const Head = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      getSearchSugsestions();
+     if (searchCache[searchQuery]) {
+        setSuggestions(searchCache[searchQuery]);
+      } else {
+        getSearchSugsestions();
+      }
     }, 200);
 
     return () => {
@@ -26,18 +32,24 @@ const Head = () => {
 
   const getSearchSugsestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery, {
-      mode: "cors",
-    });
-    const json = await data.json();
-    //console.log(json[1]);
-    setSuggestions(json[1]);
-
-    // // update cache
-    // dispatch(
-    //   cacheResults({
-    //     [searchQuery]: json[1],
-    //   })
-    // );
+      mode: "no-cors",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":"GET,POST",
+      },
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+    const jsonResult = await data.json();
+    //console.log(jsonResult[1]);
+    //const results=await data.json();
+    setSuggestions(jsonResult[1]);
+    
+    //console.log(data)
+      // update cache
+    dispatch(cacheResults({[searchQuery]: jsonResult[1]})
+   );
   };
 
   // key i
