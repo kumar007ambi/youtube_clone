@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { closeMenu } from "../utills/appSlice";
+import CommentsPage from "./CommentsPage";
 
 const WatchPage = () => {
   //useSearchParams works as hook
@@ -30,6 +31,7 @@ const WatchPage = () => {
           <LiveChat />
         </div> */}
       </div>
+      <CommentsPage/>
     </div>
   );
 };
