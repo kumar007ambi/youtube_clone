@@ -13,7 +13,7 @@ const VideoCard = ({ info }) => {
       />
       <ul>
         <li className="font-bold py-2">{title}</li>
-        <li>{channelTitle}</li>
+        <li className="font-bold">{channelTitle}</li>
         <li>{statistics.viewCount} Million views</li>
       </ul>
     </div>
